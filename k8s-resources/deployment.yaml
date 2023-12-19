@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solar-deployment
+  labels:
+    app: solar-system
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: solar-system
+  template:
+    metadata:
+      labels:
+        app: solar-system
+    spec:
+      containers:
+      - name: 
+        image: siddharth67/solar-system:v3
+        ports:
+        - containerPort: 80
