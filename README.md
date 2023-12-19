@@ -49,4 +49,4 @@ ArgoCD Application Project:
 
 An ArgoCD Application can be created using a YAML definition file. This file contains the source of the  application  which can be the github repo where the codes are stored in, destination which is the kubernetes namespace, and the sync Details which refers to the synchronization process that ArgoCD manages between a desired state (defined in Git) and the actual state of applications running in your Kubernetes cluster.
 
-For this project we will be creaating a simple test project that contains kubernetes resource manifest.  The resources can be found [here](githublink).
+For this project we will be creaating a simple test project that contains kubernetes resource manifest.  The resources can be found [here](https://github.com/marviigrey/GitOps-ArgoCD/tree/main/k8s-resources).
