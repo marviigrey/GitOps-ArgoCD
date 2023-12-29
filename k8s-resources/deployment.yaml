@@ -1,7 +1,8 @@
+#this is a simple manifest file
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-namespace: solar-system
+  namespace: solar-system
   name: solar-deployment
   labels:
     app: solar-system
