@@ -54,4 +54,9 @@ For this project we will be creaating a simple test project that contains kubern
 We can create the app using the cli or the UI. For this project, i will be using the cli to create the app.
 
 To create an argoCD app run:
-        argocd create
+        argocd app create <app name> --repo <github-repo> --path <path to manifest-file> -- dest-namespace <namespace> --dest-server <cluster address>.
+
+Argocd Project: 
+ An ArgoCD project is a logical grouping or namespace within ArgoCD that helps in organizing and managing a set of related applications, repositories, and resources.
+
+ We can easily create an argocd project on our argocd UI. 
