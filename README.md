@@ -73,4 +73,12 @@ Argocd Project:
  Resource is suspended or paused, typical example is a paused deployment - Suspended.
  Health assessment failed and actual health status is unknown - Unknown.
  
-Trying to configure custom health checks using configMaps in argoCD:
+Trying to configure custom health checks using configMaps in argoCD, by adding data into 
+the configmap deployed during argoCD configuration. This custom health checks are used in 
+a situation where we want to check our application health for specific resources.
+
+Synchronisation strategies: ArgoCD allows customization on application synchronisation between the state of git and that of the kuberentes cluster.
+Automatic Sync: ArgoCD will apply the changes automatically by updatig the resources in the target clusters.
+Manual Sync: changes are detected by argoCD but resources are not updated automatically.
+Auto-pruning: Thiis feature describes what happens when files are deleted or removed from git.
+Self Heal: Self heal defines what argoCD does when you make "kubectl edit" changes directly in the cluster.
