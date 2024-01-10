@@ -61,5 +61,16 @@ Argocd Project:
 
  We can easily create an argocd project on our argocd UI. 
 
- Reconcilation Loop: this is a state of synchronization of your git repository to your kubernetes cluster. This loop ensures both the git repository containing manifests that were used to create resources in our kubernetes cluster remains the same with that of the cluster. Automatically, Argocd makes a pull request with or without a timeout to ensure both states are synchronized. We can remove a polling delay by setting up a webhook on github. This can be done by adding the server address of our argocd.
+ Reconcilation Loop: this is a state of synchronization of your git repository to your kubernetes cluster. This loop ensures both the git repository containing manifests that were used to create resources in our kubernetes cluster remains the same with that of the cluster. Automatically, Argocd makes a pull request with or without a timeout to ensure both states are synchronized. We can remove a polling delay by setting up a webhook on github. This can be done by adding the server address of our argocd. 
 
+ Webhook: argoCD also support github webhook for automatic pulling of changes in our code repository.
+
+ Application health checks status and their meaning: 
+ All resources are 100% healthy - Healthy
+ Resources are unhealthy, but could still be healthy given time. - Progressing.
+ Resource status indicates a failure or inablity to reach a healthy state - Degraded.
+ Resource is not present in the cluster - Missing.
+ Resource is suspended or paused, typical example is a paused deployment - Suspended.
+ Health assessment failed and actual health status is unknown - Unknown.
+ 
+Trying to configure custom health checks using configMaps in argoCD:
