@@ -90,5 +90,7 @@ We can simply run:
         
         kubectl apply -f <path to manifest>
 
+This automatically create all resources listed in the declarative script.
 
+The App of Apps pattern enables us to progamatically and automatically generate ArgoCD applications.
 
