@@ -16,7 +16,7 @@ spec:
   source:
     repoURL:  https://github.com/marviigrey/GitOps-ArgoCD
     targetRevision: HEAD  # For Helm, this refers to the chart version.
-    path:  ./declaratives/multi-app
+    path:  ./declaratives/app-of-apps
       
   destination:
     server: https://kubernetes.default.svc
