@@ -82,3 +82,13 @@ Automatic Sync: ArgoCD will apply the changes automatically by updatig the resou
 Manual Sync: changes are detected by argoCD but resources are not updated automatically.
 Auto-pruning: Thiis feature describes what happens when files are deleted or removed from git.
 Self Heal: Self heal defines what argoCD does when you make "kubectl edit" changes directly in the cluster.
+
+You can set any of the above mentioned strategy to synchronize the state of your git repository with the state of your kubernetes cluster.
+
+ArgoCD resources can also be created using manifest files, meaning that the resources we create using the argoCD UI or CLI can also be created using manifest files. This aproach is known as the declarative approach. The manifest file contains the namespace,argoCD project, RepoURL, path to the resources in the repo, Synchronisation policies and many more.
+We can simply run:
+        
+        kubectl apply -f <path to manifest>
+
+
+
