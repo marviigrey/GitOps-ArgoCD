@@ -1,3 +1,5 @@
+This Repository describes my learning process on the CICD tool called ArgoCD. I created this repo to share all that i have learnt about the CICD tool called argoCD and how it can be integrated with other tools.
+
 Pre-requisite:
  1. Basic understanding of Continuous integration and the concept of continuous deployment.
  
@@ -92,5 +94,21 @@ We can simply run:
 
 This automatically create all resources listed in the declarative script.
 
-The App of Apps pattern enables us to progamatically and automatically generate ArgoCD applications.
+The App of Apps pattern enables us to progamatically and automatically generate ArgoCD applications. 
+
+Deploying aplications using Helm Charts: We can deploy applications to argocd using custom helm charts stored in git repositories, bitnami, or any package manager. After deploying applications using argocd from a helm chart, you wont see the applications when you run "helm app list" but rather view them on argocd ui or "argocd app list" in the cli. 
+Aside the helm chart being a popular package manager, we also make use of bitnami a package manager used for deploying resources both on VMs and a k8s cluster. We can use this package manager to install apps running in our cluster by connecting the bitnami helm chart repo to our argoCD repo lists.
+
+Multi-cluster Deployments: ArgoCD also supports multi-cluster deployment.
+To do this: we will need to set config and add the cluster:
+
+        kubectl config set-clsuter prod --server=https://1.2.3.4 --certificate-authority=prod.crt 
+        kubectl config set-credentials admin --client-certificate=admin.crt --client-key=admin.key
+        kubectl config set-context admin-prod
+
+Once you have multiple cluster configured, you can register your external cluster using this command:
+
+        argocd cluster add <context-name>
+
+Doing this, resources such as secrets will be created and registered under argoCD. When you open your application you will be able to see the cluster registered as a destination.
 
