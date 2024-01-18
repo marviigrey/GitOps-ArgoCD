@@ -112,3 +112,63 @@ Once you have multiple cluster configured, you can register your external cluste
 
 Doing this, resources such as secrets will be created and registered under argoCD. When you open your application you will be able to see the cluster registered as a destination.
 
+Role based access control policies in argoCD: 
+In argoCD we can control users and groups access to our clusters using SSO products such as dex octa or simply using local user management system provided by argocd:
+
+        kubectl -n argocd patch configmap argocd-cm --patch='{"data":{"accounts.ali": "apiKey,login"}}'
+
+This command creates a new user and sets an api token, which allows generating of JWT JSON web token authentification for API access whereas the login capability allows the user to login using the User-Interface.
+
+You can also set up users through argoCD CLI:
+        argocd account update-password --account <account-name>
+
+We can also modi assigning custom roles to users by editing the argocd config map using patch imperative command.
+
+Dex Okta Connector: Dex is an identity manager that powers authentication for other applications by using OpenID connect. Note: i made use of Auth0 because it's free and it could do the demo that i wanted.
+#client-Id RBPzLnjBltOvlXDVrMN9Kzz0mO3gudOw
+#client-secret 3c-nxh3eEKqUe8e8TJf1tBvNdAEuTKwl98l1CyI7TzkaxD9Kp-B7o82aRpbEuXNY
+In the auth, i created an organisation and two users, i added them into the organisation.
+To register your argocd application on argoCD:
+
+    Take note of the clientId and clientSecret values.
+    Register login url as https://your.argoingress.address/login
+    Set allowed callback url to https://your.argoingress.address/auth/callback
+    Under connections, select the user-registries you want to use with argo.
+
+To configure oidc for argoCD run:
+        
+        kubectl edit configmaps -n argocd argocd-cm
+ #add this to the configmap and edit the values       
+data:
+  application.instanceLabelKey: argocd.argoproj.io/instance
+  url: https://your.argoingress.address
+  oidc.config: |
+    name: Auth0
+    issuer: https://<yourtenant>.<eu|us>.auth0.com/
+    clientID: <theClientId>
+    clientSecret: <theClientSecret>
+    requestedScopes:
+    - openid
+    - profile
+    - email
+    # not strictly necessary - but good practice:
+    - 'http://your.domain/groups'
+...
+
+To set RBAC for users,groups, run:
+
+          kubectl edit configmap argocd-rbac-cm
+        #paste this on the cm and edit the values:
+        ...
+data:
+  policy.csv: |
+    # let members with group someProjectGroup handle apps in someProject
+    # this can also be defined in the UI in the group-definition to avoid doing it there in the configmap
+    p, someProjectGroup, applications, *, someProject/*, allow
+    # let the group membership argocd-admins from OIDC become role:admin - needs to go into the configmap
+    g, argocd-global-admins, role:admin
+  policy.default: role:readonly
+  # essential to get argo to use groups for RBAC:
+  scopes: '[http://your.domain/groups, email]' 
+...
+

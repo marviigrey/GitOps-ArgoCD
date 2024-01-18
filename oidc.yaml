@@ -1,0 +1,16 @@
+...
+data:
+  application.instanceLabelKey: argocd.argoproj.io/instance
+  url: https://192.168.49.2:30619
+  oidc.config: |
+    name: Auth0
+    issuer: https://dev-yaymx7w5s1b31a8x.us.auth0.com/
+    clientID: RdUhHg9YBPkG8CFvcmo3hhQyevUmKYvp
+    clientSecret: XD7NS0MbAysa0Yr1dzBkkarE8PaOtzJs5rxpJWjSe2FrzylqisuZdUAHd0wPnxer
+    requestedScopes:
+    - openid
+    - profile
+    - email
+    
+    
+...
