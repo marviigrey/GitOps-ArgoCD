@@ -172,3 +172,20 @@ data:
   scopes: '[http://your.domain/groups, email]' 
 ...
 
+Sealed-Secrets: When running applications on our cluster, sometimes we have sensitive details we want to keep as secrets. We make use of bitnamy sealed secret helm chart.  When we install the binami sealed secret chart using helm, we also need to software for encrypting kubernetes secrets such as kube-seal. Kube-seal CLI is used for encrypting secrets in kubernetes.
+ 
+To install bitnami sealed secrets:
+        1. go to the argocd ui and add the bitnami helm chart repo for installing apps.
+        2. on the type of repo,use the helm type.
+        3. for the chart, select or search the "sealed-secrets" chart.
+        4. install it on the kube-system namespace on your cluster.
+        5. Deployments will be created and pods will be initialized.
+
+After that we install the kubeseal CLI:
+       - wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.25.0/kubeseal-0.25.0-linux-amd64.tar.gz
+       - tar -xvf kubeseal-0.25.0-linux-amd64.tar.gz
+       - chmod +x kubeseal
+       - mv kubeseal /usr/local/bin
+       - kubeseal --version
+
+Once we have the kubeseal installed, we move further to test the kubeseal with a dummy secret. what the kubeseal will do when it discovered the secret is that it will encrypt it then store it.
