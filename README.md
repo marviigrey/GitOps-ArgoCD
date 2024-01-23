@@ -188,4 +188,8 @@ After that we install the kubeseal CLI:
        - mv kubeseal /usr/local/bin
        - kubeseal --version
 
-Once we have the kubeseal installed, we move further to test the kubeseal with a dummy secret. what the kubeseal will do when it discovered the secret is that it will encrypt it then store it.
+Once we have the kubeseal installed, we move further to test the kubeseal with a dummy secret. what the kubeseal will do when it discovered the secret is that it will encrypt it then store it. We also need to pass in the kubeseal controller which runs in the kube-system namespace. To do this:
+        kubectl -n kube-system get secrets sealed-secrets-keymnnmz -o json | jq .data'."tls.crt"' -r | base64 -d > sealed-secret.crt
+
+The kubeseal controller helps to encrypt all secrets which lets us push them to public repos.
+We can also store secrets or encrypt secrets using the Hashicorp vault. HashiCorp Vault is a tool designed for managing secrets and protecting sensitive data within a modern data center or cloud environment
