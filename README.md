@@ -193,3 +193,16 @@ Once we have the kubeseal installed, we move further to test the kubeseal with a
 
 The kubeseal controller helps to encrypt all secrets which lets us push them to public repos.
 We can also store secrets or encrypt secrets using the Hashicorp vault. HashiCorp Vault is a tool designed for managing secrets and protecting sensitive data within a modern data center or cloud environment
+
+Monitoring metrics on argocd using prometheus and grafana:
+For prometheus to be able to monitor metrics, we make use of kube operators, The operator makes use of kubernetes custom resources to simpplify the deployment and configuration of prometheus,grafana, and other related monitoring components. 
+
+Configuration: Prometheus uses service/pod monitoring crd to perform auto discovery for scrape targets.
+service monitoring:- Actual services exposes metrics at a defined endpoint defined with a distinguished label. Examples of metrics to be monitored argocd-reposerver,argocd-server, argocd-applicationset-controller etc. The services are discovered based on matching labels by the service monitor. The operator uses the prometheus CRD to match the service monitors based on labels and generates the configuration for prometheus. Lastly the prometheus operator calls the config loader to automatically update the config yaml with argocd scraping target details. 
+To get started, we install prometheus on our cluster using Helm:
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo update
+        helm install [RELEASE_NAME] prometheus-community/prometheus
+
+After that we configure argocd service monitor:
+see the details in argo-svc-monitor.yaml to configure service monitors for argocd metrics.

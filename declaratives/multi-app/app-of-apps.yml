@@ -1,3 +1,8 @@
+hvs.kIe6Nqy7u3IzuwuUySNyBIRZ token
+WRLBjtlDT6k2hw7QpQPyDl5qgkrgpTlzbQQPNNfp9I6a
+nQHmOFjcD3+ZTIXBeyOgL+8W44DietH8DBedlDbXp08y
+kd2g7Nyvq7rqimHC/sScGCyroSS3weF0TM9pavdeCBbA
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
