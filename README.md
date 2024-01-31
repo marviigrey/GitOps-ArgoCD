@@ -206,3 +206,44 @@ To get started, we install prometheus on our cluster using Helm:
 
 After that we configure argocd service monitor:
 see the details in argo-svc-monitor.yaml to configure service monitors for argocd metrics.
+
+Once we have this configured, we can also set our grafana dashboard and configure grafana to get a UI for the metrics of resources running in our clusters.
+
+To create a new alert rule for our argocd resources, we can easidy create them by adding the rule to the prometheus-alert-rules CRD in our cluster. Run:
+
+        kubectl -n prometheus edit prometheusrules.monitoring.coreos.com prometheus-kube-prometheus-alertmanager.rules
+
+#add the following alert configuration to the yaml manifest file.
+
+        - alert: ArgoApplicationOutOfSync
+      expr: argocd_app_info{sync_status="OutOfSync"} == 1
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary:  "'{{ $labels.name }}' Application has synchronization issue"
+
+This way, you can visualize alerts of resources in your argoCD that are out of sync.
+
+Notifications:
+for the noification, we can start by creating a slack app on any slack workspace and a channel in the workspace. Create a slack bot by:
+1. go to app.slack.com/api.
+2. create a bot token and add the "chat:write" and "chat:customize" bot scope.
+3. generate and copy the Oauth token, save it for later. 
+4. Go to your cluster where argocd configurations are placed on k8s resources.
+5. Store Oauth access token in argocd-notifications-secret secret
+
+        yaml apiVersion: v1 kind: Secret metadata: name: <secret-name> stringData: slack-token: <Oauth-access-token>
+
+6. Define service type slack in data section of argocd-notifications-cm configmap:
+
+        yaml apiVersion: v1 kind: ConfigMap metadata: name: <config-map-name> data: service.slack: | token: $slack-token
+
+7. Add annotation in application yaml file to enable notifications for specific argocd app. The following example uses the on-sync-succeeded trigger:
+
+        yaml apiVersion: argoproj.io/v1alpha1 kind: Application metadata: annotations: notifications.argoproj.io/subscribe.on-sync-succeeded.slack: my_channel
+
+run: 
+              kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
+
+To add more message templates.
