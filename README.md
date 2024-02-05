@@ -247,3 +247,11 @@ run:
               kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
 
 To add more message templates.
+
+CICD with jenkins and GitOps.
+First we need to create a seperate repo for our code that will run our application. this will be a simple golang hello world app:
+
+        mkdir app
+        cd app
+        touch main.go
+        touch Dockerfile
