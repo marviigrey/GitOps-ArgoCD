@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Clone Git Repo') {
+            steps {
+                git 'https://github.com/marviigrey/GitOps-ArgoCD'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    try {
+                        // Define Dockerfile location
+                        def dockerfilePath = "./app/Dockerfile"
+                        // Define Docker image tag
+                        def dockerImageTag = "helloworld:latest"
+                        
+                        // Build Docker image using Dockerfile and tag
+                        docker.build(dockerImageTag, "-f ${dockerfilePath} .")
+                    } catch (Exception e) {
+                        // Handle build errors
+                        echo "Error building Docker image: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error("Failed to build Docker image")
+                    }
+                }
+            }
+        }
+        stage('push to docker') {
+            steps{
+                script{
+                     def dockerHubImageTag = "marviigrey/helloworld:latest"
+                      docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        // Push Docker image to Docker Hub
+                        docker.image(dockerHubImageTag).push()
+                    }
+                }
+            }
+        }
+    }
+}
